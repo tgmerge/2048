@@ -137,7 +137,7 @@ GameManager.prototype.move = function (direction) {
           tile.updatePosition(positions.next);
 
           // Update the score
-          self.score += merged.value;
+          self.score += merged.value * 1.06;
 
           // The mighty 2048 tile
           if (merged.value === 2048) self.won = true;
@@ -160,6 +160,8 @@ GameManager.prototype.move = function (direction) {
     }
 
     this.actuate();
+
+    this.actuator.hideTiles();
   }
 };
 

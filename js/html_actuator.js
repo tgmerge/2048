@@ -25,6 +25,7 @@ HTMLActuator.prototype.actuate = function (grid, metadata) {
     self.updateBestScore(metadata.bestScore);
 
     if (metadata.terminated) {
+      self.showTiles();
       if (metadata.over) {
         self.message(false); // You lose
       } else if (metadata.won) {
@@ -109,19 +110,21 @@ HTMLActuator.prototype.updateScore = function (score) {
   var difference = score - this.score;
   this.score = score;
 
-  this.scoreContainer.textContent = this.score;
+  this.scoreContainer.textContent = this.score.toFixed(0);
 
   if (difference > 0) {
     var addition = document.createElement("div");
     addition.classList.add("score-addition");
-    addition.textContent = "+" + difference;
+    addition.textContent = "+" + difference.toFixed(2);
 
     this.scoreContainer.appendChild(addition);
   }
+
+  
 };
 
 HTMLActuator.prototype.updateBestScore = function (bestScore) {
-  this.bestContainer.textContent = bestScore;
+  this.bestContainer.textContent = parseInt(bestScore).toFixed(0);
 };
 
 HTMLActuator.prototype.message = function (won) {
@@ -136,4 +139,20 @@ HTMLActuator.prototype.clearMessage = function () {
   // IE only takes one value to remove at a time.
   this.messageContainer.classList.remove("game-won");
   this.messageContainer.classList.remove("game-over");
+};
+
+HTMLActuator.prototype.hideTiles = function () {
+  // hidden mode!
+  var container = document.querySelector(".tile-container");
+  container.style.webkitAnimation = "none";
+  setTimeout(function(){container.style.webkitAnimation = "osuhidden 0.5s 1";}, 0);
+  console.log("hide");
+};
+
+HTMLActuator.prototype.showTiles = function () {
+  // hidden mode!
+  var container = document.querySelector(".tile-container");
+  container.style.opacity = 1;
+  container.style.webkitAnimation = "none";
+  console.log("show");
 };

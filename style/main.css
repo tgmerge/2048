@@ -57,7 +57,7 @@ h1.title {
   position: relative;
   display: inline-block;
   background: #bbada0;
-  padding: 15px 25px;
+  padding: 15px 35px;
   font-size: 25px;
   height: 25px;
   line-height: 47px;
@@ -93,7 +93,7 @@ h1.title {
     animation-fill-mode: both; }
 
 .score-container:after {
-  content: "Score"; }
+  content: "Score×1.06"; }
 
 .best-container:after {
   content: "Best"; }
@@ -227,9 +227,42 @@ hr {
   .grid-cell:last-child {
     margin-right: 0; }
 
+@keyframes osuhidden
+{
+  5%  {opacity:0;}
+  30%  {opacity:1;}
+  70%  {opacity:0;}
+}
+
+@-moz-keyframes osuhidden /* Firefox */
+{
+  5%  {opacity:0;}
+  30%  {opacity:1;}
+  70%  {opacity:0;}
+}
+
+@-webkit-keyframes osuhidden /* Safari and Chrome */
+{
+  5%  {opacity:0;}
+  30%  {opacity:1;}
+  70%  {opacity:0;}
+}
+
+@-o-keyframes osuhidden /* Opera */
+{
+  5%  {opacity:0;}
+  30%  {opacity:1;}
+  70%  {opacity:0;}
+}
+
 .tile-container {
   position: absolute;
-  z-index: 2; }
+  z-index: 2; 
+  opacity: 0;
+  animation: osuhidden 100ms 1;
+  -moz-animation: osuhidden 100ms 1;
+  -webkit-animation: osuhidden 100ms 1;
+  -o-animation: osuhidden 100ms 1;}
 
 .tile, .tile .tile-inner {
   width: 107px;
