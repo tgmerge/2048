@@ -145,6 +145,7 @@ HTMLActuator.prototype.hideTiles = function () {
   // hidden mode!
   var container = document.querySelector(".tile-container");
   container.style.webkitAnimation = "none";
+  container.style.opacity = 0;
   setTimeout(function(){container.style.webkitAnimation = "osuhidden 0.5s 1";}, 0);
   console.log("hide");
 };
