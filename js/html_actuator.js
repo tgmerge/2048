@@ -4,6 +4,9 @@ function HTMLActuator() {
   this.bestContainer    = document.querySelector(".best-container");
   this.messageContainer = document.querySelector(".game-message");
 
+  gameContainer         = document.querySelector(".game-container");
+  tileContainer         = document.querySelector(".tile-container");
+
   this.score = 0;
 }
 
@@ -13,13 +16,21 @@ HTMLActuator.prototype.actuate = function (grid, metadata) {
   window.requestAnimationFrame(function () {
     self.clearContainer(self.tileContainer);
 
+    var maxCell = {value: 0};
+
     grid.cells.forEach(function (column) {
       column.forEach(function (cell) {
         if (cell) {
           self.addTile(cell);
+
+          // find the tile with max value for flashlight
+          if (cell.value > maxCell.value)
+            maxCell = cell;
         }
       });
     });
+
+    setTimeout(self.updateFlashlight(maxCell), 10);
 
     self.updateScore(metadata.score);
     self.updateBestScore(metadata.bestScore);
@@ -143,17 +154,53 @@ HTMLActuator.prototype.clearMessage = function () {
 
 HTMLActuator.prototype.hideTiles = function () {
   // hidden mode!
-  var container = document.querySelector(".tile-container");
-  container.style.webkitAnimation = "none";
-  container.style.opacity = 0;
-  setTimeout(function(){container.style.webkitAnimation = "osuhidden 0.5s 1";}, 0);
-  console.log("hide");
+  tileContainer.style.webkitAnimation = "none";
+  tileContainer.style.mozAnimation = "none";
+  tileContainer.style.animation = "none";
+  tileContainer.style.oAnimation = "none";
+  
+  tileContainer.style.opacity = 0;
+  setTimeout(function(){
+    tileContainer.style.webkitAnimation = "osuhidden 0.5s 1";
+    tileContainer.style.mozAnimation = "osuhidden 0.5s 1";
+    tileContainer.style.animation = "osuhidden 0.5s 1";
+    tileContainer.style.oAnimation = "osuhidden 0.5s 1";
+  }, 0);
 };
 
 HTMLActuator.prototype.showTiles = function () {
   // hidden mode!
-  var container = document.querySelector(".tile-container");
-  container.style.opacity = 1;
-  container.style.webkitAnimation = "none";
-  console.log("show");
+  tileContainer.style.opacity = 1;
+  tileContainer.style.webkitAnimation = "none";
+  tileContainer.style.mozAnimation = "none";
+  tileContainer.style.animation = "none";
+  tileContainer.style.oAnimation = "none";
 };
+
+HTMLActuator.prototype.applyFlashlight = function () {
+  gameContainer.style.webkitMaskImage = "url('mask.svg')";
+  gameContainer.style.webkitMaskRepeat = "no-repeat";
+  gameContainer.style.maskImage = "url('mask.svg')";
+  gameContainer.style.maskRepeat = "no-repeat";
+  document.querySelector("html").style.background = "#070707";
+  document.querySelector("body").style.background = "#070707";
+}
+
+HTMLActuator.prototype.removeFlashlight = function () {
+  gameContainer.style.webkitMaskImage = "none";
+  gameContainer.style.webkitMaskRepeat = "no-repeat";
+  gameContainer.style.maskImage = "none";
+  gameContainer.style.maskRepeat = "no-repeat";
+  document.querySelector("html").style.background = "";
+  document.querySelector("body").style.background = "";
+}
+
+HTMLActuator.prototype.updateFlashlight = function (tile) {
+  var baseTile = document.querySelector(".grid-container>:nth-child("+(tile.y+1)+")>:nth-child("+(tile.x+1)+")");
+  var maskX = baseTile.offsetLeft - 150 + 'px';
+  var maskY = baseTile.offsetTop - 150 + 'px';
+  gameContainer.style.webkitMaskPositionX = maskX;
+  gameContainer.style.webkitMaskPositionY = maskY;
+  gameContainer.style.maskPositionX = maskX;
+  gameContainer.style.maskPositionY = maskY;
+}
